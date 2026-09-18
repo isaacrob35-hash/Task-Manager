@@ -9,16 +9,25 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        ZStack {
+            background
+            VStack {
+                Text("Task Manager")
+                    .font(.largeTitle)
+                    .bold()
+                    .foregroundColor(.white)
+                    .padding(.bottom, 100)
+            }
         }
-        .padding()
+        
+        private var background: some View {
+            LinearGradient(colors: [.blue, .white],
+                           startPoint: .top,
+                           endPoint: .bottom)
+            .ignoresSafeArea()
+        }
+        
+        #Preview {
+            ContentView()
+        }
     }
-}
-
-#Preview {
-    ContentView()
-}
