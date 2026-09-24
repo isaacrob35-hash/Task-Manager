@@ -8,26 +8,58 @@
 import SwiftUI
 
 struct ContentView: View {
+    let viewModel = TaskViewModel()
+
     var body: some View {
         ZStack {
             background
             VStack {
-                Text("Task Manager")
-                    .font(.largeTitle)
-                    .bold()
-                    .foregroundColor(.white)
-                    .padding(.bottom, 100)
+                header
+                taskList
+                buttons
             }
-        }
-        
-        private var background: some View {
-            LinearGradient(colors: [.blue, .white],
-                           startPoint: .top,
-                           endPoint: .bottom)
-            .ignoresSafeArea()
-        }
-        
-        #Preview {
-            ContentView()
+            .padding()
         }
     }
+
+    private var background: some View {
+        LinearGradient(colors: [.blue, .black],
+                       startPoint: .top,
+                       endPoint: .bottom)
+            .ignoresSafeArea()
+    }
+
+    private var header: some View {
+        Text("\(viewModel.remainingCount()) tasks remaining")
+            .font(.largeTitle)
+            .bold()
+            .foregroundStyle(.white)
+    }
+
+    private var taskList: some View {
+        ScrollView {
+            ForEach(viewModel.tasks) { task in
+                TaskRow(task: task)
+                    .onTapGesture {
+                        viewModel.toggleTask(task)
+                    }
+            }
+        }
+    }
+
+    private var buttons: some View {
+        HStack {
+            Button("Add Task") {
+                viewModel.addTask(titled: "New Task")
+            }
+            Button("Clear Completed") {
+                viewModel.clearCompleted()
+            }
+        }
+        .buttonStyle(.borderedProminent)
+    }
+}
+
+#Preview {
+    ContentView()
+}
